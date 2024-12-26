@@ -106,7 +106,7 @@ const SignIn = () => {
       window.AppleID.auth.init({
         clientId: "com.nextpet", // Replace with your Service ID
         scope: "email name", // Request necessary fields
-        redirectURI: "https://nextpet-test.vercel.app/user/sign-in/callback", // Replace with your redirect URL
+        redirectURI: "https://nextpet.vercel.app/user/sign-in/callback", // Replace with your redirect URL
         usePopup: true,
       });
     }

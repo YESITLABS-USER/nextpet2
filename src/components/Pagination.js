@@ -10,8 +10,7 @@ const Pagination = ({ postPerPage, totalPosts, paginate, currentPage }) => {
     <div className="influ-pagi">
       <ul>
         <li>
-          <a
-            href="#!"
+          <a style={{cursor:'pointer'}}
             onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
           >
             <MdArrowBackIosNew />
@@ -25,8 +24,7 @@ const Pagination = ({ postPerPage, totalPosts, paginate, currentPage }) => {
           </li>
         ))}
         <li>
-          <a
-            href="#!"
+          <a style={{cursor:'pointer'}}
             onClick={() =>
               paginate(
                 currentPage < pageNumbers.length

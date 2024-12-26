@@ -426,7 +426,7 @@ const Pets = () => {
                   <button type="button">
                     <img
                       src="/images/Nextpet-imgs/all-icons/filter-map-icon.svg"
-                      alt=""
+                      alt="filter-map-icon"
                     />
                   </button>
                 </div>
@@ -523,7 +523,7 @@ const Pets = () => {
           <div className="influ-pagi pt-4">
             <Pagination
               postPerPage={postsPerPage}
-              totalPosts={currentPosts?.length == 0 ? 1 : allPets.length}
+              totalPosts={currentPosts?.length === 0 || petsData?.length}
               paginate={paginate}
               currentPage={currentPage}
             />

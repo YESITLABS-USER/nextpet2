@@ -143,7 +143,7 @@ const SignIn = () => {
               <h3>Or Sign In using</h3>
             </div>
             <div className="social-login-wrap">
-              <a href="#">
+              <a style={{cursor:"pointer"}}>
                 <Image
                   src="/images/Nextpet-imgs/breeder-signin-imgs/socail1.png"
                   alt="Social 1"
@@ -151,7 +151,7 @@ const SignIn = () => {
                   height={40} style={{cursor:'pointer'}} onClick={handleBreederSignIn}
                 />
               </a>
-              <a href="#">
+              <a style={{cursor:"pointer"}}>
                 <Image
                   src="/images/Nextpet-imgs/breeder-signin-imgs/social2.png"
                   alt="Social 2"
@@ -159,7 +159,7 @@ const SignIn = () => {
                   height={40}
                 />
               </a>
-              {/* <a href="#">
+              {/* <a style={{cursor:"pointer"}}>
                 <Image
                   src="/images/Nextpet-imgs/breeder-signin-imgs/social3.png"
                   alt="Social 3"
