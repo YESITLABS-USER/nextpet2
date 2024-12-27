@@ -278,6 +278,22 @@ const Index = () => {
     setDropdownVisible(!isDropdownVisible);
   }
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the filter dropdown 
+      if (!event.target.closest(".dropdown-showfilter") && 
+          !event.target.closest(".dropdown-filterbtn")) {
+        setDropdownVisible(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
   return (
     <>
       <div className="pets-breeder-wrap">

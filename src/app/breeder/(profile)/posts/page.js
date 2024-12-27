@@ -130,19 +130,29 @@ const Post = () => {
         fillterPost();
       }
     }
+    setTimeout(() => {
+      setDropdownVisible(!isDropdownVisible)
+    }, 500);
   };
   function handleModel() {
     setDropdownVisible(!isDropdownVisible);
   }
 
-  // function formatDate(timestamp) {
-  //   const date = new Date(timestamp);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the filter dropdown 
+      if (!event.target.closest(".dropdown-showfilter") && 
+          !event.target.closest(".dropdown-filterbtn")) {
+        setDropdownVisible(false);
+      }
+    };
   
-  //   // Format the date in dd-mm-yyyy format
-  //   const formattedDate = `${("0" + date.getDate()).slice(-2)}-${("0" + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`;
+    document.addEventListener("mousedown", handleClickOutside);
   
-  //   return formattedDate;
-  // }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>

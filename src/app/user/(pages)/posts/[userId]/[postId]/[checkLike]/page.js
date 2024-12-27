@@ -85,20 +85,38 @@ const ContactPetDetails = () => {
       }, 1000);
     }
   };
-  
-  const handleModal = ({
-    post_id = postData?.post_id,
-    breeder_id = postData?.user_id,
-    contacts_colour = postData?.contacts_colour,
-  }) => {
-    setModalData({ post_id, breeder_id, contacts_colour, "date_contacts_breeder" : postData?.total_contact });
-    if (contacts_colour == 1) {
-      setShowPreviousModal(true);
-    } else {
-      setShowModal(true);
-    }
-  };
 
+
+const handleModal = ({
+  post_id = postData?.post_id,
+  breeder_id = postData?.user_id,
+  contacts_colour = postData?.contacts_colour,
+} = {}) => {
+  const modalData = {
+    post_id,
+    breeder_id,
+    contacts_colour,
+    date_contacts_breeder: postData?.total_contact,
+  };
+  setModalData(modalData);
+console.log(contacts_colour)
+  if (contacts_colour == 1) {
+    setShowPreviousModal(true);
+  } else {
+    setShowModal(true);
+  }
+};
+
+  function sethandleData () {
+    if(isAuthenticated){
+      handleModal()
+    } else {
+      toast.error("User must be logged in");
+      setTimeout(() => {
+        router.push('/user/sign-in');
+      }, 1000);
+    }
+  }
   const closeModal = () => {
     PostDetailGet();
     setShowModal(false);
@@ -129,16 +147,6 @@ const ContactPetDetails = () => {
     }
   };
 
-  function sethandleData () {
-    if(isAuthenticated){
-      handleModal()
-    } else {
-      toast.error("User must be logged in");
-      setTimeout(() => {
-        router.push('/user/sign-in');
-      }, 1000);
-    }
-  }
 
   return (
     // <ProtectedRoute>
