@@ -28,7 +28,7 @@ const BreederPopup = () => {
         className="modal fade show"
         id="breeder-guide"
         tabIndex="-1"
-        role="dialog"
+        role="dialog" data-bs-dismiss="modal"
         aria-labelledby="myModalLabel"
         style={{ display: 'block', background: 'rgba(0, 0, 0, 0.5)' }}
       >
