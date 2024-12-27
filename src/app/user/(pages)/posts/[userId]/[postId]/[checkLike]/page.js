@@ -87,25 +87,24 @@ const ContactPetDetails = () => {
   };
 
 
-const handleModal = ({
-  post_id = postData?.post_id,
-  breeder_id = postData?.user_id,
-  contacts_colour = postData?.contacts_colour,
-} = {}) => {
-  const modalData = {
-    post_id,
-    breeder_id,
-    contacts_colour,
-    date_contacts_breeder: postData?.total_contact,
-  };
-  setModalData(modalData);
-console.log(contacts_colour)
-  if (contacts_colour == 1) {
-    setShowPreviousModal(true);
-  } else {
-    setShowModal(true);
-  }
-};
+    const handleModal = ({
+      post_id = postData?.post_id,
+      breeder_id = postData?.user_id,
+      contacts_colour = postData?.contacts_colour,
+    } = {}) => {
+      const modalData = {
+        post_id,
+        breeder_id,
+        contacts_colour,
+        date_contacts_breeder: postData?.total_contact,
+      };
+      setModalData(modalData);
+      if (contacts_colour == 1) {
+        setShowPreviousModal(true);
+      } else {
+        setShowModal(true);
+      }
+    };
 
   function sethandleData () {
     if(isAuthenticated){

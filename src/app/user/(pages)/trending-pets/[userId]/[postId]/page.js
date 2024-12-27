@@ -134,13 +134,15 @@ const ContactPetDetails2 = () => {
       notes: addNotes,
     };
 
-    if(addNotes == "" && addNotes) {
+    if(addNotes == "") {
+      setErrorMsg('Please fill the notes!')
+      return;
+    }
+    else if(addNotes) {
       const response = await UserAddNotes(payload);
       if (response.data.code === 200) {
         UserShowNotesFun();
       }
-    } else {
-      setErrorMsg('Please fill the notes!')
     }
     
   };
@@ -700,7 +702,7 @@ const ContactPetDetails2 = () => {
                   <div className="contacted-breeder-inner">
                     <div className="col-lg-12 col-md-12">
                       {showUserNotes &&
-                        showUserNotes.map((note, index) => (
+                        showUserNotes?.map((note, index) => (
                           <div key={index}>
                             <div className="experience-user-wrap">
                               <div className="calender-warp">
@@ -709,7 +711,7 @@ const ContactPetDetails2 = () => {
                                   {note.date &&
                                     moment(note.date).format("MMMM D")}
                                 </span>
-                                <p>{note.notes ? note.notes : ""}</p>
+                                <p>{note?.notes ? note?.notes : ""}</p>
                               </div>
                             </div>
                           </div>
