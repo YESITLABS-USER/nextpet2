@@ -18,7 +18,7 @@ const Pagination = ({ postPerPage, totalPosts, paginate, currentPage }) => {
         </li>
         {pageNumbers.map((number) => (
           <li key={number} className={currentPage === number ? "active" : ""}>
-            <a href="#!" onClick={() => paginate(number)}>
+            <a style={{cursor:'pointer'}} onClick={() => paginate(number)}>
               {number}
             </a>
           </li>

@@ -30,13 +30,13 @@ const ResetPassword = () => {
     }
 
     if (password !== cPassword) {
-      toast.error("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
 
     if (!email) {
-      console.error("Email cookie is missing or expired.");
-      toast.error("Email cookie expired. Please try again.");
+      toast.error(`Invalid Username`);
+      router.push('/user/forget-password')
       return;
     }
 
@@ -62,12 +62,14 @@ const ResetPassword = () => {
     setPassword(value);
     setIsPasswordValid(passwordRegex.test(value));
     setDoPasswordsMatch(value === cPassword);
+    setError("")
   };
 
   const handleCPasswordChange = (e) => {
     const value = e.target.value;
     setCPassword(value);
     setDoPasswordsMatch(value === password);
+    setError("")
   };
 
   return (

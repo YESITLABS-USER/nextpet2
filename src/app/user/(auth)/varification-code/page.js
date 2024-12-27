@@ -152,7 +152,7 @@ const VerificationCode = () => {
                 )}
               />
             </div>
-            <span>{otpError}</span>
+            <span style={{ color:'red'}}>{otpError}</span>
             <input type="submit" className="login-btn" value="Verify & Proceed" />
 
             <div className="terms-condition-paragraph">

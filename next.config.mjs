@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["admin.nextpetapp.com", "frontend.nextpetapp.com"], // Add the allowed domain here
+    domains: ["admin.nextpetapp.com", "frontend.nextpetapp.com","frontendauth.nextpetapp.com"], // Add the allowed domain here
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,

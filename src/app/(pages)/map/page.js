@@ -125,7 +125,7 @@ const Index = () => {
     let user = {
       user_id: userIdOrBreederId,
       type: filters.animalType || animalTypeFilter,
-      breed: filters.breedType || breedTypeFilter,
+      breed: filters?.breedType?.value.toLowerCase().replace(" ", "_") || breedTypeFilter,
       recent: recentDate,
       latitude: location?.latitude,
       longitude: location?.longitude,
@@ -147,7 +147,7 @@ const Index = () => {
   const getAllPetsWithoutLogin = async (filters = {}) => {
     let user = {
       type: filters.animalType || animalTypeFilter,
-      breed: filters.breedType || breedTypeFilter,
+      breed: filters?.breedType?.value.toLowerCase().replace(" ", "_") || breedTypeFilter,
       recent: "recent",
       latitude: location?.latitude,
       longitude: location?.longitude,
