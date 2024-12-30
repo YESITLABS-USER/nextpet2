@@ -236,10 +236,9 @@ const Contacted = () => {
               <div className="col-lg-5 col-md-6">
                 <div className="contacted-breeder-img">
                   <Image
-                    src={
-                      pageData?.pet_breeder_details?.[0].image[0]
-                        ? pageData?.pet_breeder_details?.[0].image[0]
-                        : "/images/Nextpet-imgs/Image_not_available.webp"
+                     src={
+                      pageData?.pet_breeder_details?.[0]?.image?.[0] || 
+                      "/images/Nextpet-imgs/Image_not_available.webp"
                     }
                     alt=""
                     loading="lazy"

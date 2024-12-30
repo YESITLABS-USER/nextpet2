@@ -181,7 +181,7 @@ const Favorites = () => {
                             <div className="newyear-cat-dog-in" style={{ width: "33%" }} key={index} >
                               <div className="popular-breedersimg-wrap">
                                 <Image
-                                  src={item?.image[0] || "/images/Nextpet-imgs/Image_not_available.webp"}
+                                  src={item?.image || "/images/Nextpet-imgs/Image_not_available.webp"}
                                   width={250}
                                   height={206}
                                   alt="new "
@@ -280,36 +280,25 @@ const Favorites = () => {
                                 }`}
                               key={index}
                             >
-                              <div
-                                className="adopted-icon"
-                                style={{ top: "32px" }}
-                              >
-                                <img
-                                  src={
-                                    item?.delivery == 1
-                                      ? "/images/Nextpet-imgs/dashboard-imgs/adopted.svg"
-                                      : ""
-                                  }
-                                  alt=""
+                              {item?.delivery == 1 && 
+                              <div className="adopted-icon" style={{ top: "32px" }}>
+                                <img src={"/images/Nextpet-imgs/dashboard-imgs/adopted.svg" }
+                                  alt="adotpted"
                                 />
-                              </div>
+                              </div>}
                               <div className="post-cardsimg-wrap">
-                                <Image src={item?.image?.[0] || "/images/Nextpet-imgs/Image_not_available.webp"} alt="" width={400} height={300} style={{minHeight:'150px'}}/>
+                                <Image src={item?.image?.[0] || "/images/Nextpet-imgs/Image_not_available.webp"} alt="pets Image" width={400} height={300} style={{minHeight:'175px', maxHeight:'175px'}}/>
                                 <div className="actionpost-heart">
                                   <div
                                     className="heart-icon-wrap"
                                     onClick={() => handlePostLike(item)}
                                     style={{ cursor: "pointer" }}
                                   >
-                                    <img
-                                      src={
-                                        item?.total_like?.length < 0
+                                    <img src={ item?.total_like?.length < 0
                                           ? "/images/Nextpet-imgs/dashboard-imgs/heart-border2.svg"
                                           : "/images/Nextpet-imgs/dashboard-imgs/heart-fill.svg"
                                       }
-                                      alt=""
-                                      className="active"
-                                    />
+                                      alt="like" className="active" />
 
                                     <span>{item?.total_like}</span>
                                   </div>

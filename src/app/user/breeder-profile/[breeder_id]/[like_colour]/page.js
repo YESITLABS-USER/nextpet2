@@ -27,12 +27,20 @@ const ContactPetDetails = () => {
     breeder_id: "",
   });
 
+  const router = useRouter();
   const [likedData, setLikeData] = useState(like_colour);
+  const { isAuthenticated } = useAuth(); 
+  
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("user_user_id" || "breeder_user_id");
+      setUserId(storedUserId);
+    }
+  }, [userId]);
 
   const breederDetail = async () => {
     try {
       if(userId) {
-
         const response = await axios.post(`${BASE_URL}/api/all_post_listing`, {
           user_id: userId,
         });
@@ -41,10 +49,7 @@ const ContactPetDetails = () => {
           // Find the breeder with the matching breeder_id
           const liked = response.data.popular_breeder?.find(
           (breeder) => breeder.breeder_id == breeder_id
-        );
-        
-        console.log(liked)
-        
+        );        
         setLikeData(liked?.like_colour);
       }
     }
@@ -55,49 +60,34 @@ const ContactPetDetails = () => {
   
   useEffect(() => {
     breederDetail();
-  }, []);
-  
-
-  const { isAuthenticated } = useAuth(); 
-  
-  const router = useRouter();
-  // const [breederData, setBreederData] = useState(null);
-
-  const getFullUrl = () => {
-    if (typeof window !== "undefined") {
-      return window.location.href; // Returns full URL
-    }
-    return '';
-  };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUserId = localStorage.getItem("user_user_id" || "breeder_user_id");
-      setUserId(storedUserId);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchBreederData = async () => {
-      try {
-        await axios.post(`${BASE_URL}/api/all_post_listing`, {
-          user_id: userId,
-        });
-      } catch (err) {
-        console.error("error:", err);
-      }
-    };
-  
-    fetchBreederData();
-  }, []);
-  
-
-  useEffect(() => {
     if(breeder_id || userId){
       getBreederDetails();
       getAllRecentPost();
     }
-  }, []);
+  }, [userId]);
+
+
+  const getFullUrl = () => {
+    if (typeof window !== "undefined") {
+      return window.location.href;
+    }
+    return '';
+  };
+
+  // useEffect(() => {
+  //   const fetchBreederData = async () => {
+  //     try {
+  //       await axios.post(`${BASE_URL}/api/all_post_listing`, {
+  //         user_id: userId,
+  //       });
+  //     } catch (err) {
+  //       console.error("error:", err);
+  //     }
+  //   };
+  
+  //   fetchBreederData();
+  // }, []);
+  
 
   const getBreederDetails = async () => {
     let apiData = {
@@ -123,7 +113,7 @@ const ContactPetDetails = () => {
     }
   
     const checkBreederLike = likedData === null || likedData === "0" || likedData == 111 ? 1 : 111;
-    const checkUserLike = value?.check_like === "0" ? "1" : "0"; 
+    const checkUserLike = value?.check_like === "0" || value?.check_like === 1 ? 1 : 111; 
   
     const likeData = {
       user_id: userId,
@@ -140,12 +130,10 @@ const ContactPetDetails = () => {
       const response = await axios.post(apiURL, likeData);
       if (response.data.code === 200) {
         if (value?.post_id) {
-          // Refresh posts
           getAllRecentPost();
         } else {
-          // Refresh breeder details
           getBreederDetails();
-          setLikeData(checkBreederLike); // Update likedData
+          setLikeData(checkBreederLike); 
         }
       }
     } catch (err) {
@@ -311,7 +299,7 @@ const ContactPetDetails = () => {
                         className="active" height={15} width={15}
                       />
 
-                      <span>{item?.total_like}</span>
+                      <span style={{paddingLeft:'7px'}}>{item?.total_like}</span>
                     </div>
                   </div>
 

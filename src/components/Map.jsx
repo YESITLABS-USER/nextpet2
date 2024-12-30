@@ -31,18 +31,19 @@ const StoreMap = ({ data, location }) => {
   
 
   const [center, setCenter] = useState([40.7128, -74.0060]); // Default to New York City
+  const [zoomed, setZoomed] = useState(2)
 
   useEffect(() => {
     if (location) {
       const { lat, lon } = location;
       setCenter([lat, lon]);
+      setZoomed(10)
     } 
   }, [location, data]);
-  
 
   return (
     <div style={{ height: "90vh" }}>
-      <MapContainer center={center} zoom={10} style={{ width: "100%", height: "100%" }} key={center.join(",")}>
+      <MapContainer center={center} zoom={zoomed} style={{ width: "100%", height: "100%" }} key={center.join(",")}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

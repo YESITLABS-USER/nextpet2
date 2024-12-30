@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css";
 import Image from "next/image";
 import { MdLocationOn } from "react-icons/md";
 import Select from "react-select";
@@ -11,6 +9,8 @@ import BASE_URL from "../../utils/constant";
 import { useRouter } from "next/navigation";
 
 // Dynamically import the Map component to ensure it only runs on the client
+import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
 const Map = dynamic(() => import("../../../components/Map"), { ssr: false });
 
 const Index = () => {

@@ -12,6 +12,11 @@ import { useAuth } from "../../context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/navigation";
+// leflet
+import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("../../../components/Map"), { ssr: false });
+
 
 const Pets = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -38,6 +43,8 @@ const Pets = () => {
   });
   const [ requiredFields, setRequiredFields] = useState(false);
   const [searchItemParam, setSearchItem] = useState('');
+
+  const [mapToggle, setMapToggle] = useState(true)
 
   const { isAuthenticated } = useAuth();
   
@@ -254,7 +261,14 @@ const Pets = () => {
       );
     });
     setFilteredData(filtered);
+    if (filtered.length > 0 && filtered[0].latitude && filtered[0].longitude) {
+      setLocation({
+        lat: filtered[0].latitude,
+        lon: filtered[0].longitude,
+      });
+    }
   };
+  
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -313,9 +327,9 @@ const Pets = () => {
     router.push(`/user/posts/${item.user_breeder_id}/${item.id}/${item.check_like} `)
   }
 
-  function handleAuth() {
-    router.push("/map");
-  }
+  // function handleAuth() {
+  //   router.push("/map");
+  // }
 
   function handleMail(item) {
     if(isAuthenticated){
@@ -428,13 +442,13 @@ const Pets = () => {
                 </div>
 
                 <div className="location-filter">
-                  <span style={{ borderRadius: "10px 0 0 10px", color: '#fff', border: 'none', width: '50px', fontWeight: '500', border: '1px solid #d1d1d1', height: '44px', cursor: 'pointer', background: '#fff'}}  onClick={handleAuth} >
+                  <span style={{ borderRadius: "10px 0 0 10px", color: '#fff', border: 'none', width: '50px', fontWeight: '500', border: '1px solid #d1d1d1', height: '44px', cursor: 'pointer', background: mapToggle ? "#fff": '#EAA206' }}  onClick={() => setMapToggle(false)} >
                     <MdLocationOn className="fas fa-map-marker-alt"
-                      style={{ color: "#e49a01", margin: "12px", cursor: "pointer" }}
+                      style={{ color: mapToggle ? '#EAA206' : '#fff', margin: "12px", cursor: "pointer" }}
                       size={20}/>
                   </span>
 
-                  <button type="button">
+                  <button type="button" onClick={() => setMapToggle(true)} style={{ borderRadius: "0 10px 10px 0", color: '#fff', border: 'none', width: '50px', fontWeight: '500', border: '1px solid #d1d1d1', height: '44px', cursor: 'pointer', background: mapToggle ? '#EAA206' : "#fff"}}>
                     <img src="/images/Nextpet-imgs/all-icons/filter-map-icon.svg"
                       alt="filter-map-icon"/>
                   </button>
@@ -443,6 +457,10 @@ const Pets = () => {
             </div>
           </div>
 
+          {mapToggle ? ( 
+            <>
+            
+           
           <div className="pets-breeder-cards">
             
             {/* {(currentPosts && currentPosts.length < 0) && <p> No data available...</p>} */}
@@ -529,15 +547,20 @@ const Pets = () => {
               </div>
             )))}
           </div>
-          
           <div className="influ-pagi pt-4">
-            <Pagination
-              postPerPage={postsPerPage}
-              totalPosts={currentPosts?.length === 0 || petsData?.length}
-              paginate={paginate}
-              currentPage={currentPage}
-            />
-          </div>
+          <Pagination
+            postPerPage={postsPerPage}
+            totalPosts={currentPosts?.length === 0 || petsData?.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+        </div> </>
+        ) 
+          :
+          (
+          <Map data={currentPosts && currentPosts.length > 0 ? currentPosts : allPets} location={location} />)
+          }
+          
         </div>
         <ContactModal
           modalIsOpen={showModal}

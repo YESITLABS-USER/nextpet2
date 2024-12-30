@@ -12,6 +12,10 @@ import PreviouslyContacted from "../../../components/PreviouslyContacted";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+// leflet
+import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("../../../components/Map"), { ssr: false });
 
 const Breeder = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -30,6 +34,7 @@ const Breeder = () => {
   const [modalData, setModalData] = useState({
     breeder_id: "",
   });
+  const [mapToggle, setMapToggle] = useState(true)
 
   const { isAuthenticated } = useAuth(); 
   const router = useRouter();
@@ -174,9 +179,9 @@ const Breeder = () => {
     setDropdownVisible(!isDropdownVisible);
   }
 
-  function handleAuth() {
-    router.push("/map-breeder");
-  }
+  // function handleAuth() {
+  //   router.push("/map-breeder");
+  // }
   
   function handleMail(item) {
     if(isAuthenticated){
@@ -278,19 +283,19 @@ const Breeder = () => {
                 </div>
 
                 <div className="location-filter">
-                <span style={{ borderRadius: "10px 0 0 10px", color: '#fff', border: 'none', width: '50px', fontWeight: '500', border: '1px solid #d1d1d1', height: '44px', cursor: 'pointer', background: '#fff'}}  onClick={handleAuth} >
+                <span style={{ borderRadius: "10px 0 0 10px", color: '#fff', border: 'none', width: '50px', fontWeight: '500', border: '1px solid #d1d1d1', height: '44px', cursor: 'pointer',background: mapToggle ? "#fff": '#EAA206'}}  onClick={() => setMapToggle(false)} >
                     <MdLocationOn
                       className="fas fa-map-marker-alt"
                       // onClick={}
                       style={{
-                        color: "#e49a01",
+                        color: mapToggle ? '#EAA206' : '#fff',
                         margin: "12px",
                         cursor: "pointer",
                       }}
                       size={20}
                     />
                   </span>
-                  <button type="button">
+                  <button type="button" onClick={() => setMapToggle(true)} style={{ borderRadius: "0 10px 10px 0", color: '#fff', border: 'none', width: '50px', fontWeight: '500', border: '1px solid #d1d1d1', height: '44px', cursor: 'pointer', background: mapToggle ? '#EAA206' : "#fff"}}>
                     <img
                       src="/images/Nextpet-imgs/all-icons/filter-map-icon.svg"
                       alt=""
@@ -300,115 +305,120 @@ const Breeder = () => {
               </div>
             </div>
           </div>
-
-          <div className="pets-breeder-cards">
-          {currentPosts?.length === 0 ? (
-              <h1 style={{ fontFamily:'GoodDog New', display:'flex', justifyContent:'center', width:'100%', padding:'50px 0'}}> No Data Found...</h1>
-            ) : (
-            currentPosts?.map((item, index) => (
-              <div className="newyear-cat-dog-in" key={index}>
-                <div className="popular-breedersimg-wrap">
-                  <Image
-                    src={item?.image || "/images/Nextpet-imgs/Image_not_available.webp"}
-                    width={250}
-                    height={206}
-                    alt="profile"
-                    loading="lazy"
-                  />
-                  <div
-                    className="heart-icon-wrap"
-                    onClick={() => handlePostLike(item)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <Image
-                      width={15}
-                      height={15}
-                      src={
-                        item?.like_colour == null
-                          ? "/images/Nextpet-imgs/dashboard-imgs/heart-border2.svg"
-                          : "/images/Nextpet-imgs/dashboard-imgs/heart-fill.svg"
-                      }
-                      alt=""
-                      className="active"
-                    />
-                    <span>{item?.like_count}</span>
-                  </div>
-                </div>
-
-                <div className="newyear-content-card">
-                  <div className="heading-content">
-                    <h3>{item?.name}</h3>
-                    <div className="rating-wrap">
-                      <span>
-                        {/* {item?.star_rating || 0}&nbsp;{" "} */}
-                        {(Math.round((parseFloat(item?.star_rating || "0")) * 10) / 10).toFixed(1) || 0} &nbsp;
-                        <FaStar
-                          style={{
-                            color: "white",
-                            marginBottom: "4px",
-                          }}
-                        />
-                      </span>
-                    </div>
-                    <div
-                      className="mail-boxwrap"
-                      onClick={() => handleMail(item)}
-                      style={{ cursor: "pointer" }}
-                    >
+          
+          {mapToggle ? (
+            <>
+              <div className="pets-breeder-cards">
+              {currentPosts?.length === 0 ? (
+                  <h1 style={{ fontFamily:'GoodDog New', display:'flex', justifyContent:'center', width:'100%', padding:'50px 0'}}> No Data Found...</h1>
+                ) : (
+                currentPosts?.map((item, index) => (
+                  <div className="newyear-cat-dog-in" key={index}>
+                    <div className="popular-breedersimg-wrap">
                       <Image
-                        width={15}
-                        height={15}
-                        src={
-                          item?.contacts_colour_breeder == null
-                            ? "/images/Nextpet-imgs/dashboard-imgs/yellow-mail-letter.svg"
-                            : "/images/Nextpet-imgs/newyear-cats-imgs/mail.svg"
-                        }
-                        alt=""
+                        src={item?.image || "/images/Nextpet-imgs/Image_not_available.webp"}
+                        width={250}
+                        height={206}
+                        alt="profile"
+                        loading="lazy"
                       />
                       <div
-                        className="mail-count"
-                        data-bs-target="#previous-information"
-                        data-bs-toggle="modal"
+                        className="heart-icon-wrap"
+                        onClick={() => handlePostLike(item)}
+                        style={{ cursor: "pointer" }}
                       >
-                        <span>{item?.breeder_total_count_all || 0}</span>
+                        <Image
+                          width={15}
+                          height={15}
+                          src={
+                            item?.like_colour == null
+                              ? "/images/Nextpet-imgs/dashboard-imgs/heart-border2.svg"
+                              : "/images/Nextpet-imgs/dashboard-imgs/heart-fill.svg"
+                          }
+                          alt=""
+                          className="active"
+                        />
+                        <span>{item?.like_count}</span>
+                      </div>
+                    </div>
+
+                    <div className="newyear-content-card">
+                      <div className="heading-content">
+                        <h3>{item?.name}</h3>
+                        <div className="rating-wrap">
+                          <span>
+                            {/* {item?.star_rating || 0}&nbsp;{" "} */}
+                            {(Math.round((parseFloat(item?.star_rating || "0")) * 10) / 10).toFixed(1) || 0} &nbsp;
+                            <FaStar
+                              style={{
+                                color: "white",
+                                marginBottom: "4px",
+                              }}
+                            />
+                          </span>
+                        </div>
+                        <div
+                          className="mail-boxwrap"
+                          onClick={() => handleMail(item)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <Image
+                            width={15}
+                            height={15}
+                            src={
+                              item?.contacts_colour_breeder == null
+                                ? "/images/Nextpet-imgs/dashboard-imgs/yellow-mail-letter.svg"
+                                : "/images/Nextpet-imgs/newyear-cats-imgs/mail.svg"
+                            }
+                            alt=""
+                          />
+                          <div
+                            className="mail-count"
+                            data-bs-target="#previous-information"
+                            data-bs-toggle="modal"
+                          >
+                            <span>{item?.breeder_total_count_all || 0}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="pt-1">
+                      {item?.bio && item?.bio.length > 50 
+                      ? item.bio.slice(0, 30) + "..." : item?.bio || "No Description available"}
+
+                      </p>
+
+                      <div className="viewmore-wrap">
+                        <h4>{item?.breeder_post_count} active posts</h4>
+                        <div className="action-wrap">
+                          <a
+                          // router.push(`/user/breeder-profile/${slide.breeder_id}/${likeId} `)
+                            href={`/user/breeder-profile/${item?.breeder_id}/${item?.like_colour} `}
+                          >
+                            View More&nbsp;{" "}
+                            <MdNavigateNext
+                              size={25}
+                              style={{ marginLeft: "10px" }}
+                            />
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  <p className="pt-1">
-                  {item?.bio && item?.bio.length > 50 
-                  ? item.bio.slice(0, 30) + "..." : item?.bio || "No Description available"}
-
-                  </p>
-
-                  <div className="viewmore-wrap">
-                    <h4>{item?.breeder_post_count} active posts</h4>
-                    <div className="action-wrap">
-                      <a
-                      // router.push(`/user/breeder-profile/${slide.breeder_id}/${likeId} `)
-                        href={`/user/breeder-profile/${item?.breeder_id}/${item?.like_colour} `}
-                      >
-                        View More&nbsp;{" "}
-                        <MdNavigateNext
-                          size={25}
-                          style={{ marginLeft: "10px" }}
-                        />
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                )))}
               </div>
-            )))}
-          </div>
-
-          <div className="influ-pagi pt-4">
-            <Pagination
-              postPerPage={postsPerPage}
-              totalPosts={currentPosts?.length === 0 || petsData?.length}
-              paginate={paginate}
-              currentPage={currentPage}
-            />
-          </div>
+              
+              <div className="influ-pagi pt-4">
+                <Pagination
+                  postPerPage={postsPerPage}
+                  totalPosts={currentPosts?.length === 0 || petsData?.length}
+                  paginate={paginate}
+                  currentPage={currentPage}
+                />
+              </div>
+            </>) : (
+              <Map data={currentPosts && currentPosts.length > 0 ? petsData : currentPosts} location={location} />
+            )}
         </div>
         <ContactModal
           modalIsOpen={showModal}

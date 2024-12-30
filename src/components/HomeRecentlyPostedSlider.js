@@ -198,8 +198,8 @@ const HomeRecentlyPostedSlider = ({ slides, onClick }) => {
                        </p> */}
                        <p>
                         {slide.description
-                          ? slide.description.length > 50
-                            ? `${slide.description.slice(0, 50)}...`
+                          ? slide.description.length > 40
+                            ? `${slide.description.slice(0, 40)}...`
                             : slide.description
                           : "Description not available"}
                       </p>
